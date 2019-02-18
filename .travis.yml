@@ -1,0 +1,24 @@
+sudo: required
+services:
+  - docker;
+
+before_install:
+  - docker build -t oreillyalan88/docker-react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run reillyalan88/docker-react-test npm run test -- --coverage
+
+after_success:
+  - docker build -t oreillyalan88/multi-client -f ./client
+  - docker build -t oreillyalan88/multi-nginx -f ./nginx
+  - docker build -t oreillyalan88/multi-server -f ./server
+  - docker build -t oreillyalan88/multi-worker -f ./worker
+
+#login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+#push images to docker hub
+  - docker push oreillyalan88/multi-client
+  - docker push oreillyalan88/multi-nginx
+  - docker push oreillyalan88/multi-server
+  - docker push oreillyalan88/multi-worker
