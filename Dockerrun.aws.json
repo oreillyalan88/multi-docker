@@ -1,0 +1,10 @@
+{
+    "AWSEBDockerrun": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "oreillyalan88/multi-client"
+        }
+    ]
+}
+
